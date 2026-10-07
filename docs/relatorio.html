@@ -12,25 +12,75 @@
 <meta charset="utf-8">
 <title>Relatório: Linter miniLua</title>
 <style>
+  :root {
+    --azul: #0b3d6b;
+    --azul-claro: #eaf0f7;
+    --linha: #c8d3df;
+    --texto: #1a1a1a;
+    --cinza: #5b6573;
+  }
   @page { size: A4; margin: 15mm 18mm 15mm 18mm; }
-  body { font-family: "Times New Roman", Times, serif; font-size: 10.5pt; line-height: 1.32; color: #111; background: #fff; margin: 0; }
-  h1 { font-size: 16pt; margin: 0 0 2pt 0; }
-  .sub { margin: 0 0 10pt 0; font-size: 10.5pt; }
-  h2 { font-size: 12.5pt; margin: 13pt 0 4pt 0; }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { font-family: Cambria, Georgia, "Times New Roman", serif; font-size: 10.5pt; line-height: 1.34; color: var(--texto); background: #fff; margin: 0; }
+
+  /* Capa */
+  .capa { height: 262mm; display: flex; flex-direction: column; align-items: center; text-align: center; page-break-after: always; break-after: page; }
+  .capa .instituicao { font-family: "Segoe UI", Calibri, Arial, sans-serif; color: var(--azul); line-height: 1.45; }
+  .capa .instituicao .usp { font-size: 15pt; font-weight: 700; letter-spacing: 1.5pt; }
+  .capa .instituicao .unidade { font-size: 11pt; }
+  .capa img { width: 42mm; margin: 12mm 0 0 0; }
+  .capa .meio { margin-top: auto; margin-bottom: auto; width: 100%; }
+  .capa .disciplina { font-family: "Segoe UI", Calibri, Arial, sans-serif; font-size: 11pt; color: var(--cinza); letter-spacing: 0.6pt; text-transform: uppercase; }
+  .capa h1 { font-family: "Segoe UI", Calibri, Arial, sans-serif; font-size: 24pt; line-height: 1.2; color: var(--azul); margin: 6pt 0 6pt 0; }
+  .capa .subtitulo { font-size: 13pt; color: var(--cinza); font-style: italic; }
+  .capa .regua { width: 60mm; height: 2pt; background: var(--azul); margin: 12pt auto; }
+  .capa .bloco { font-size: 11.5pt; line-height: 1.6; }
+  .capa .rotulo { font-family: "Segoe UI", Calibri, Arial, sans-serif; font-size: 9pt; color: var(--cinza); text-transform: uppercase; letter-spacing: 0.8pt; margin-top: 14pt; }
+  .capa .local { font-family: "Segoe UI", Calibri, Arial, sans-serif; font-size: 11pt; color: var(--azul); line-height: 1.5; }
+
+  /* Corpo */
+  h2 { font-family: "Segoe UI", Calibri, Arial, sans-serif; font-size: 13pt; color: var(--azul); margin: 14pt 0 5pt 0; padding-bottom: 2pt; border-bottom: 1.2pt solid var(--azul); break-after: avoid; }
+  h2:first-of-type { margin-top: 0; }
   p { margin: 0 0 6pt 0; text-align: justify; }
-  pre { font-family: Consolas, "DejaVu Sans Mono", monospace; font-size: 8pt; line-height: 1.2; background: #f3f3f3; border: 1px solid #ddd; padding: 5pt 7pt; margin: 4pt 0 8pt 0; white-space: pre-wrap; }
-  code { font-family: Consolas, "DejaVu Sans Mono", monospace; font-size: 9.4pt; }
-  table { border-collapse: collapse; margin: 4pt 0 8pt 0; font-size: 9.5pt; }
-  td, th { border: 1px solid #999; padding: 2pt 6pt; text-align: left; vertical-align: top; }
-  th { background: #eee; }
-  ul { margin: 0 0 6pt 0; padding-left: 18pt; }
+  b { color: var(--azul); }
+  pre { font-family: Consolas, "DejaVu Sans Mono", monospace; font-size: 8pt; line-height: 1.22; background: #f6f8fa; border: 1px solid var(--linha); border-left: 3pt solid var(--azul); border-radius: 3pt; padding: 6pt 8pt; margin: 4pt 0 9pt 0; white-space: pre-wrap; break-inside: avoid; }
+  code { font-family: Consolas, "DejaVu Sans Mono", monospace; font-size: 9.2pt; background: var(--azul-claro); border-radius: 2pt; padding: 0 1.5pt; }
+  pre code, td code { background: none; padding: 0; }
+  table { width: 100%; border-collapse: collapse; margin: 4pt 0 9pt 0; font-size: 9.3pt; break-inside: avoid; }
+  th { font-family: "Segoe UI", Calibri, Arial, sans-serif; background: var(--azul); color: #fff; font-weight: 600; text-align: left; padding: 3pt 7pt; }
+  td { border-bottom: 1px solid var(--linha); padding: 2.5pt 7pt; text-align: left; vertical-align: top; }
+  tr:nth-child(even) td { background: #f4f7fa; }
+  ul { margin: 0 0 6pt 0; padding-left: 16pt; }
   li { margin-bottom: 2pt; }
+  li::marker { color: var(--azul); }
+  .divisao td:first-child { white-space: nowrap; width: 1%; }
 </style>
 </head>
 <body>
 
-<h1>Linter e extrator de métricas para miniLua</h1>
-<p class="sub">Compiladores, Trabalho 1. Francisco Eduardo Fontenele Ramos Neto (15452569), Guilherme Borges de Pádua Barbosa (15653045), Vinicius Botte (15522900).</p>
+<section class="capa">
+  <div class="instituicao">
+    <div class="usp">UNIVERSIDADE DE SÃO PAULO</div>
+    <div class="unidade">Faculdade de Filosofia, Ciências e Letras de Ribeirão Preto</div>
+    <div class="unidade">Departamento de Computação e Matemática</div>
+  </div>
+  <img src="../image.png" alt="Brasão da USP">
+  <div class="meio">
+    <div class="disciplina">5954023 - Compiladores</div>
+    <h1>Linter e Extrator de Métricas<br>para miniLua</h1>
+    <div class="subtitulo">Trabalho 1: análise estática com Flex e Bison</div>
+    <div class="regua"></div>
+    <div class="rotulo">Integrantes</div>
+    <div class="bloco">
+      Francisco Eduardo Fontenele Ramos Neto (15452569)<br>
+      Guilherme Borges de Pádua Barbosa (15653045)<br>
+      Vinicius Botte (15522900)
+    </div>
+    <div class="rotulo">Professor</div>
+    <div class="bloco">Prof. Dr. José Augusto Baranauskas</div>
+  </div>
+  <div class="local">Ribeirão Preto<br>Outubro de 2026</div>
+</section>
 
 <h2>1. Escolhas de projeto</h2>
 <p>O analisador tem quatro partes: o lexer em Flex (<code>src/lexer.l</code>), a gramática em Bison (<code>src/parser.y</code>), o estado da análise (<code>src/analyzer.cpp</code>) e o programa principal (<code>src/main.cpp</code>). Usamos C++11 para ter <code>std::string</code>, <code>std::vector</code> e <code>std::map</code> no estado, mas mantivemos o esqueleto C do Bison e o lexer C do Flex, usando só recursos que existem desde o Bison 3.0 e o Flex 2.5.35. A interface entre os dois é a de sempre: <code>yylex()</code>, <code>yylval</code> e <code>yylloc</code>.</p>
@@ -147,7 +197,7 @@ Complexidade Ciclomática: 3 (1 base + 1 while + 1 if)
 </ul>
 
 <h2>8. Divisão do trabalho</h2>
-<table>
+<table class="divisao">
 <tr><th>Integrante</th><th>Responsabilidade</th></tr>
 <tr><td>Francisco Eduardo Fontenele Ramos Neto (15452569)</td><td>Analisador léxico, contagem de linhas, literais e strings</td></tr>
 <tr><td>Guilherme Borges de Pádua Barbosa (15653045)</td><td>Gramática, controle de escopo das funções e blocos, mensagens de erro</td></tr>
