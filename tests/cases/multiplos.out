@@ -1,0 +1,54 @@
+$ linter multiplos.lua
+=== RELATÓRIO DE ANÁLISE ===
+Arquivo: multiplos.lua
+Linhas Físicas: 9
+Linhas Lógicas: 9
+Funções Definidas: 1
+
+--- Função: f ---
+Parâmetros: 1 (a)
+Chamadas de Funções Externas: 1 (imprime)
+Profundidade Máxima de Aninhamento: 2
+Complexidade Ciclomática: 4 (1 base + 2 if + 1 for)
+
+--- Escopo Global (fora de funções) ---
+Chamadas de Funções Externas: 2 (f, f)
+Profundidade Máxima de Aninhamento: 1
+Complexidade Ciclomática: 1
+
+--- Alertas do Linter ---
+[Aviso] Linha 2: Múltiplos comandos na mesma linha detectados.
+[Aviso] Linha 3: Múltiplos comandos na mesma linha detectados.
+[Aviso] Linha 5: Múltiplos comandos na mesma linha detectados.
+[Aviso] Linha 9: Múltiplos comandos na mesma linha detectados.
+[Aviso] Linha 9: 'Magic Number' detectado (2). Considere extrair para uma constante.
+============================
+[código de saída: 0]
+
+$ linter --extra multiplos.lua
+=== RELATÓRIO DE ANÁLISE ===
+Arquivo: multiplos.lua
+Linhas Físicas: 9
+Linhas Lógicas: 9
+Funções Definidas: 1
+
+--- Função: f ---
+Parâmetros: 1 (a)
+Chamadas de Funções Externas: 1 (imprime)
+Profundidade Máxima de Aninhamento: 2
+Complexidade Ciclomática: 4 (1 base + 2 if + 1 for)
+
+--- Escopo Global (fora de funções) ---
+Chamadas de Funções Externas: 2 (f, f)
+Profundidade Máxima de Aninhamento: 1
+Complexidade Ciclomática: 1
+
+--- Alertas do Linter ---
+[Aviso] Linha 2: Múltiplos comandos na mesma linha detectados.
+[Aviso] Linha 3: Múltiplos comandos na mesma linha detectados.
+[Aviso] Linha 5: Múltiplos comandos na mesma linha detectados.
+[Aviso] Linha 9: Múltiplos comandos na mesma linha detectados.
+[Aviso] Linha 9: Variável local 'p' declarada e não utilizada.
+[Aviso] Linha 9: 'Magic Number' detectado (2). Considere extrair para uma constante.
+============================
+[código de saída: 0]

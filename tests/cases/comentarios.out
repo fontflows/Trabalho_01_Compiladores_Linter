@@ -1,0 +1,48 @@
+$ linter comentarios.lua
+=== RELATÓRIO DE ANÁLISE ===
+Arquivo: comentarios.lua
+Linhas Físicas: 15
+Linhas Lógicas: 5
+Funções Definidas: 2
+
+--- Função: soma ---
+Parâmetros: 2 (a, b)
+Chamadas de Funções Externas: 0
+Profundidade Máxima de Aninhamento: 1
+Complexidade Ciclomática: 1
+
+--- Função: dobro ---
+Parâmetros: 1 (x)
+Chamadas de Funções Externas: 0
+Profundidade Máxima de Aninhamento: 1
+Complexidade Ciclomática: 1
+
+--- Alertas do Linter ---
+[Aviso] Linha 14: 'Magic Number' detectado (2). Considere extrair para uma constante.
+============================
+[código de saída: 0]
+
+$ linter --extra comentarios.lua
+=== RELATÓRIO DE ANÁLISE ===
+Arquivo: comentarios.lua
+Linhas Físicas: 15
+Linhas Lógicas: 5
+Funções Definidas: 2
+
+--- Função: soma ---
+Parâmetros: 2 (a, b)
+Chamadas de Funções Externas: 0
+Profundidade Máxima de Aninhamento: 1
+Complexidade Ciclomática: 1
+
+--- Função: dobro ---
+Parâmetros: 1 (x)
+Chamadas de Funções Externas: 0
+Profundidade Máxima de Aninhamento: 1
+Complexidade Ciclomática: 1
+
+--- Alertas do Linter ---
+[Aviso] Linha 11: Variável local 'fator' declarada e não utilizada.
+[Aviso] Linha 14: 'Magic Number' detectado (2). Considere extrair para uma constante.
+============================
+[código de saída: 0]

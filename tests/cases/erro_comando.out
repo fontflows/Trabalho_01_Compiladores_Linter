@@ -1,0 +1,7 @@
+$ linter erro_comando.lua
+erro_comando.lua:2:1: erro de sintaxe: comando incompleto, esperada atribuição ou chamada de função
+[código de saída: 1]
+
+$ linter --extra erro_comando.lua
+erro_comando.lua:2:1: erro de sintaxe: comando incompleto, esperada atribuição ou chamada de função
+[código de saída: 1]

@@ -1,0 +1,68 @@
+$ linter teste3.lua
+=== RELATÓRIO DE ANÁLISE ===
+Arquivo: teste3.lua
+Linhas Físicas: 44
+Linhas Lógicas: 37
+Funções Definidas: 3
+
+--- Função: valida_usuario ---
+Parâmetros: 3 (idade, status, pontuacao)
+Chamadas de Funções Externas: 2 (registra_evento, registra_evento)
+Profundidade Máxima de Aninhamento: 2
+Complexidade Ciclomática: 6 (1 base + 2 if + 1 elseif + 1 and + 1 or)
+
+--- Função: processa_matriz ---
+Parâmetros: 2 (linhas, colunas)
+Chamadas de Funções Externas: 2 (cria_matriz_vazia, log_operacao)
+Profundidade Máxima de Aninhamento: 4 (função -> for -> for -> if)
+Complexidade Ciclomática: 4 (1 base + 2 for + 1 if)
+
+--- Função: busca_limite ---
+Parâmetros: 2 (valores, limite_maximo)
+Chamadas de Funções Externas: 1 (alerta_limite)
+Profundidade Máxima de Aninhamento: 3 (função -> while -> if)
+Complexidade Ciclomática: 3 (1 base + 1 while + 1 if)
+
+--- Alertas do Linter ---
+[Aviso] Linha 3: 'Magic Number' detectado (18). Considere extrair para uma constante.
+[Aviso] Linha 7: 'Magic Number' detectado (1000). Considere extrair para uma constante.
+[Aviso] Linha 10: 'Magic Number' detectado (500). Considere extrair para uma constante.
+[Aviso] Linha 27: Múltiplos comandos na mesma linha detectados.
+[Aviso] Linha 40: 'Magic Number' detectado (999). Considere extrair para uma constante.
+============================
+[código de saída: 0]
+
+$ linter --extra teste3.lua
+=== RELATÓRIO DE ANÁLISE ===
+Arquivo: teste3.lua
+Linhas Físicas: 44
+Linhas Lógicas: 37
+Funções Definidas: 3
+
+--- Função: valida_usuario ---
+Parâmetros: 3 (idade, status, pontuacao)
+Chamadas de Funções Externas: 2 (registra_evento, registra_evento)
+Profundidade Máxima de Aninhamento: 2
+Complexidade Ciclomática: 6 (1 base + 2 if + 1 elseif + 1 and + 1 or)
+
+--- Função: processa_matriz ---
+Parâmetros: 2 (linhas, colunas)
+Chamadas de Funções Externas: 2 (cria_matriz_vazia, log_operacao)
+Profundidade Máxima de Aninhamento: 4 (função -> for -> for -> if)
+Complexidade Ciclomática: 4 (1 base + 2 for + 1 if)
+
+--- Função: busca_limite ---
+Parâmetros: 2 (valores, limite_maximo)
+Chamadas de Funções Externas: 1 (alerta_limite)
+Profundidade Máxima de Aninhamento: 3 (função -> while -> if)
+Complexidade Ciclomática: 3 (1 base + 1 while + 1 if)
+
+--- Alertas do Linter ---
+[Aviso] Linha 3: 'Magic Number' detectado (18). Considere extrair para uma constante.
+[Aviso] Linha 7: 'Magic Number' detectado (1000). Considere extrair para uma constante.
+[Aviso] Linha 10: 'Magic Number' detectado (500). Considere extrair para uma constante.
+[Aviso] Linha 27: Múltiplos comandos na mesma linha detectados.
+[Aviso] Linha 40: 'Magic Number' detectado (999). Considere extrair para uma constante.
+[Aviso] Linha 45: Arquivo não termina com quebra de linha; a última linha não entra na contagem de linhas físicas.
+============================
+[código de saída: 0]

@@ -1,0 +1,7 @@
+$ linter erro_numero.lua
+erro_numero.lua:1:11: erro léxico: número malformado '12abc'
+[código de saída: 1]
+
+$ linter --extra erro_numero.lua
+erro_numero.lua:1:11: erro léxico: número malformado '12abc'
+[código de saída: 1]

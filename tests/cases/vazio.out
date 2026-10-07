@@ -1,0 +1,23 @@
+$ linter vazio.lua
+=== RELATÓRIO DE ANÁLISE ===
+Arquivo: vazio.lua
+Linhas Físicas: 0
+Linhas Lógicas: 0
+Funções Definidas: 0
+
+--- Alertas do Linter ---
+Nenhuma infração de estilo detectada.
+============================
+[código de saída: 0]
+
+$ linter --extra vazio.lua
+=== RELATÓRIO DE ANÁLISE ===
+Arquivo: vazio.lua
+Linhas Físicas: 0
+Linhas Lógicas: 0
+Funções Definidas: 0
+
+--- Alertas do Linter ---
+Nenhuma infração de estilo detectada.
+============================
+[código de saída: 0]

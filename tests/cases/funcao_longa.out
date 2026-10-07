@@ -1,0 +1,35 @@
+$ linter funcao_longa.lua
+=== RELATÓRIO DE ANÁLISE ===
+Arquivo: funcao_longa.lua
+Linhas Físicas: 58
+Linhas Lógicas: 58
+Funções Definidas: 1
+
+--- Função: longa ---
+Parâmetros: 1 (x)
+Chamadas de Funções Externas: 0
+Profundidade Máxima de Aninhamento: 1
+Complexidade Ciclomática: 1
+
+--- Alertas do Linter ---
+Nenhuma infração de estilo detectada.
+============================
+[código de saída: 0]
+
+$ linter --extra funcao_longa.lua
+=== RELATÓRIO DE ANÁLISE ===
+Arquivo: funcao_longa.lua
+Linhas Físicas: 58
+Linhas Lógicas: 58
+Funções Definidas: 1
+
+--- Função: longa ---
+Parâmetros: 1 (x)
+Chamadas de Funções Externas: 0
+Profundidade Máxima de Aninhamento: 1
+Complexidade Ciclomática: 1
+
+--- Alertas do Linter ---
+[Aviso] Linha 1: Função 'longa' tem 58 linhas lógicas (limite: 50).
+============================
+[código de saída: 0]

@@ -1,0 +1,7 @@
+$ linter erro_sintaxe.lua
+erro_sintaxe.lua:6:1: erro de sintaxe: fim do arquivo inesperado; a função da linha 1 não foi fechada com 'end'
+[código de saída: 1]
+
+$ linter --extra erro_sintaxe.lua
+erro_sintaxe.lua:6:1: erro de sintaxe: fim do arquivo inesperado; a função da linha 1 não foi fechada com 'end'
+[código de saída: 1]

@@ -1,0 +1,35 @@
+$ linter teste1.lua
+=== RELATÓRIO DE ANÁLISE ===
+Arquivo: teste1.lua
+Linhas Físicas: 5
+Linhas Lógicas: 4
+Funções Definidas: 1
+
+--- Função: calcula_area_retangulo ---
+Parâmetros: 2 (base, altura)
+Chamadas de Funções Externas: 0
+Profundidade Máxima de Aninhamento: 1
+Complexidade Ciclomática: 1
+
+--- Alertas do Linter ---
+Nenhuma infração de estilo detectada.
+============================
+[código de saída: 0]
+
+$ linter --extra teste1.lua
+=== RELATÓRIO DE ANÁLISE ===
+Arquivo: teste1.lua
+Linhas Físicas: 5
+Linhas Lógicas: 4
+Funções Definidas: 1
+
+--- Função: calcula_area_retangulo ---
+Parâmetros: 2 (base, altura)
+Chamadas de Funções Externas: 0
+Profundidade Máxima de Aninhamento: 1
+Complexidade Ciclomática: 1
+
+--- Alertas do Linter ---
+Nenhuma infração de estilo detectada.
+============================
+[código de saída: 0]

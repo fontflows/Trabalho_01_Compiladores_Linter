@@ -1,0 +1,48 @@
+$ linter numeros.lua
+=== RELATÓRIO DE ANÁLISE ===
+Arquivo: numeros.lua
+Linhas Físicas: 15
+Linhas Lógicas: 14
+Funções Definidas: 1
+
+--- Função: numeros ---
+Parâmetros: 1 (x)
+Chamadas de Funções Externas: 0
+Profundidade Máxima de Aninhamento: 1
+Complexidade Ciclomática: 1
+
+--- Alertas do Linter ---
+[Aviso] Linha 2: 'Magic Number' detectado (0xFF). Considere extrair para uma constante.
+[Aviso] Linha 3: 'Magic Number' detectado (1e3). Considere extrair para uma constante.
+[Aviso] Linha 4: 'Magic Number' detectado (2.5E-2). Considere extrair para uma constante.
+[Aviso] Linha 5: 'Magic Number' detectado (0x1p4). Considere extrair para uma constante.
+[Aviso] Linha 6: 'Magic Number' detectado (.5). Considere extrair para uma constante.
+[Aviso] Linha 9: 'Magic Number' detectado (3.). Considere extrair para uma constante.
+============================
+[código de saída: 0]
+
+$ linter --extra numeros.lua
+=== RELATÓRIO DE ANÁLISE ===
+Arquivo: numeros.lua
+Linhas Físicas: 15
+Linhas Lógicas: 14
+Funções Definidas: 1
+
+--- Função: numeros ---
+Parâmetros: 1 (x)
+Chamadas de Funções Externas: 0
+Profundidade Máxima de Aninhamento: 1
+Complexidade Ciclomática: 1
+
+--- Alertas do Linter ---
+[Aviso] Linha 2: 'Magic Number' detectado (0xFF). Considere extrair para uma constante.
+[Aviso] Linha 3: 'Magic Number' detectado (1e3). Considere extrair para uma constante.
+[Aviso] Linha 4: 'Magic Number' detectado (2.5E-2). Considere extrair para uma constante.
+[Aviso] Linha 5: 'Magic Number' detectado (0x1p4). Considere extrair para uma constante.
+[Aviso] Linha 6: 'Magic Number' detectado (.5). Considere extrair para uma constante.
+[Aviso] Linha 9: 'Magic Number' detectado (3.). Considere extrair para uma constante.
+[Aviso] Linha 13: Variável local 'LIMITE' declarada e não utilizada.
+[Aviso] Linha 14: Variável local 'NEGATIVO' declarada e não utilizada.
+[Aviso] Linha 15: Variável local 'TABELA' declarada e não utilizada.
+============================
+[código de saída: 0]

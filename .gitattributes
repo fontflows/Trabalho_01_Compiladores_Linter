@@ -1,0 +1,5 @@
+# Fins de linha LF em tudo, para o projeto compilar igual no Linux e no macOS.
+* text=auto eol=lf
+# Este caso de teste precisa manter o CRLF.
+tests/cases/crlf.lua -text
+*.pdf binary

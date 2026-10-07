@@ -1,0 +1,43 @@
+$ linter teste2.lua
+=== RELATÓRIO DE ANÁLISE ===
+Arquivo: teste2.lua
+Linhas Físicas: 15
+Linhas Lógicas: 12
+Funções Definidas: 1
+
+--- Função: processa_pagamento ---
+Parâmetros: 2 (valor, tipo_cliente)
+Chamadas de Funções Externas: 1 (registra_log)
+Profundidade Máxima de Aninhamento: 2
+Complexidade Ciclomática: 4 (1 base + 1 if + 1 elseif + 1 for)
+
+--- Alertas do Linter ---
+[Aviso] Linha 2: Múltiplos comandos na mesma linha detectados.
+[Aviso] Linha 5: 'Magic Number' detectado (0.15). Considere extrair para uma constante.
+[Aviso] Linha 7: 'Magic Number' detectado (0.05). Considere extrair para uma constante.
+[Aviso] Linha 10: 'Magic Number' detectado (3). Considere extrair para uma constante.
+============================
+[código de saída: 0]
+
+$ linter --extra teste2.lua
+=== RELATÓRIO DE ANÁLISE ===
+Arquivo: teste2.lua
+Linhas Físicas: 15
+Linhas Lógicas: 12
+Funções Definidas: 1
+
+--- Função: processa_pagamento ---
+Parâmetros: 2 (valor, tipo_cliente)
+Chamadas de Funções Externas: 1 (registra_log)
+Profundidade Máxima de Aninhamento: 2
+Complexidade Ciclomática: 4 (1 base + 1 if + 1 elseif + 1 for)
+
+--- Alertas do Linter ---
+[Aviso] Linha 2: Múltiplos comandos na mesma linha detectados.
+[Aviso] Linha 5: 'Magic Number' detectado (0.15). Considere extrair para uma constante.
+[Aviso] Linha 6: 'Magic Number' detectado (2). Considere extrair para uma constante.
+[Aviso] Linha 7: 'Magic Number' detectado (0.05). Considere extrair para uma constante.
+[Aviso] Linha 10: Variável de laço 'i' não utilizada (use '_' se for intencional).
+[Aviso] Linha 10: 'Magic Number' detectado (3). Considere extrair para uma constante.
+============================
+[código de saída: 0]

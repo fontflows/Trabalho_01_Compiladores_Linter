@@ -1,0 +1,7 @@
+$ linter erro_string.lua
+erro_string.lua:2:13: erro léxico: string não terminada
+[código de saída: 1]
+
+$ linter --extra erro_string.lua
+erro_string.lua:2:13: erro léxico: string não terminada
+[código de saída: 1]

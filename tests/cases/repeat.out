@@ -1,0 +1,35 @@
+$ linter repeat.lua
+=== RELATÓRIO DE ANÁLISE ===
+Arquivo: repeat.lua
+Linhas Físicas: 12
+Linhas Lógicas: 12
+Funções Definidas: 1
+
+--- Função: espera ---
+Parâmetros: 1 (fila)
+Chamadas de Funções Externas: 4 (fila:vazia, fila:pronta, aguarda, fila:pronta)
+Profundidade Máxima de Aninhamento: 4 (função -> repeat -> if -> while)
+Complexidade Ciclomática: 5 (1 base + 1 repeat + 1 if + 1 while + 1 or)
+
+--- Alertas do Linter ---
+[Aviso] Linha 10: 'Magic Number' detectado (3). Considere extrair para uma constante.
+============================
+[código de saída: 0]
+
+$ linter --extra repeat.lua
+=== RELATÓRIO DE ANÁLISE ===
+Arquivo: repeat.lua
+Linhas Físicas: 12
+Linhas Lógicas: 12
+Funções Definidas: 1
+
+--- Função: espera ---
+Parâmetros: 1 (fila)
+Chamadas de Funções Externas: 4 (fila:vazia, fila:pronta, aguarda, fila:pronta)
+Profundidade Máxima de Aninhamento: 4 (função -> repeat -> if -> while)
+Complexidade Ciclomática: 5 (1 base + 1 repeat + 1 if + 1 while + 1 or)
+
+--- Alertas do Linter ---
+[Aviso] Linha 10: 'Magic Number' detectado (3). Considere extrair para uma constante.
+============================
+[código de saída: 0]

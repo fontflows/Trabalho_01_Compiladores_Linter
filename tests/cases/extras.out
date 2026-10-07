@@ -1,0 +1,68 @@
+$ linter extras.lua
+=== RELATÓRIO DE ANÁLISE ===
+Arquivo: extras.lua
+Linhas Físicas: 37
+Linhas Lógicas: 34
+Funções Definidas: 3
+
+--- Função: auxiliar_esquecida ---
+Parâmetros: 0
+Chamadas de Funções Externas: 0
+Profundidade Máxima de Aninhamento: 1
+Complexidade Ciclomática: 1
+
+--- Função: muitos_parametros ---
+Parâmetros: 6 (a, b, c, d, e, f)
+Chamadas de Funções Externas: 0
+Profundidade Máxima de Aninhamento: 1
+Complexidade Ciclomática: 1
+
+--- Função: classifica ---
+Parâmetros: 3 (x, y, _ignorado)
+Chamadas de Funções Externas: 1 (ipairs)
+Profundidade Máxima de Aninhamento: 5 (função -> for -> while -> if -> repeat)
+Complexidade Ciclomática: 15 (1 base + 2 if + 4 elseif + 1 for + 1 while + 1 repeat + 4 and + 1 or)
+
+--- Alertas do Linter ---
+[Aviso] Linha 28: 'Magic Number' detectado (2). Considere extrair para uma constante.
+[Aviso] Linha 31: 'Magic Number' detectado (10). Considere extrair para uma constante.
+============================
+[código de saída: 0]
+
+$ linter --extra extras.lua
+=== RELATÓRIO DE ANÁLISE ===
+Arquivo: extras.lua
+Linhas Físicas: 37
+Linhas Lógicas: 34
+Funções Definidas: 3
+
+--- Função: auxiliar_esquecida ---
+Parâmetros: 0
+Chamadas de Funções Externas: 0
+Profundidade Máxima de Aninhamento: 1
+Complexidade Ciclomática: 1
+
+--- Função: muitos_parametros ---
+Parâmetros: 6 (a, b, c, d, e, f)
+Chamadas de Funções Externas: 0
+Profundidade Máxima de Aninhamento: 1
+Complexidade Ciclomática: 1
+
+--- Função: classifica ---
+Parâmetros: 3 (x, y, _ignorado)
+Chamadas de Funções Externas: 1 (ipairs)
+Profundidade Máxima de Aninhamento: 5 (função -> for -> while -> if -> repeat)
+Complexidade Ciclomática: 15 (1 base + 2 if + 4 elseif + 1 for + 1 while + 1 repeat + 4 and + 1 or)
+
+--- Alertas do Linter ---
+[Aviso] Linha 2: Variável local 'nao_usada' declarada e não utilizada.
+[Aviso] Linha 4: Função local 'auxiliar_esquecida' definida e não utilizada.
+[Aviso] Linha 8: Função 'muitos_parametros' tem 6 parâmetros (limite: 5).
+[Aviso] Linha 8: Parâmetro 'f' não utilizado.
+[Aviso] Linha 12: Função 'classifica' tem profundidade de aninhamento 5 (limite: 4).
+[Aviso] Linha 12: Função 'classifica' tem complexidade ciclomática 15 (limite: 10).
+[Aviso] Linha 13: Atribuição à variável global 'total' dentro de função. Declare-a com 'local' se não for intencional.
+[Aviso] Linha 28: 'Magic Number' detectado (2). Considere extrair para uma constante.
+[Aviso] Linha 31: 'Magic Number' detectado (10). Considere extrair para uma constante.
+============================
+[código de saída: 0]

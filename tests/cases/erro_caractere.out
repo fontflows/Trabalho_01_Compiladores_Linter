@@ -1,0 +1,7 @@
+$ linter erro_caractere.lua
+erro_caractere.lua:2:21: erro léxico: caractere inválido '@'
+[código de saída: 1]
+
+$ linter --extra erro_caractere.lua
+erro_caractere.lua:2:21: erro léxico: caractere inválido '@'
+[código de saída: 1]

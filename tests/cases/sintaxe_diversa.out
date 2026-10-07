@@ -1,0 +1,51 @@
+$ linter sintaxe_diversa.lua
+=== RELATÓRIO DE ANÁLISE ===
+Arquivo: sintaxe_diversa.lua
+Linhas Físicas: 29
+Linhas Lógicas: 25
+Funções Definidas: 2
+
+--- Função: M.formata ---
+Parâmetros: 2 (fmt, ...)
+Chamadas de Funções Externas: 1 (string.format)
+Profundidade Máxima de Aninhamento: 1
+Complexidade Ciclomática: 1
+
+--- Função: M.processa ---
+Parâmetros: 1 (itens)
+Chamadas de Funções Externas: 7 (M.formata, table.concat, io.write, print, registra, texto:upper, texto:upper(...):sub)
+Profundidade Máxima de Aninhamento: 2
+Complexidade Ciclomática: 5 (1 base + 1 for + 2 and + 1 or)
+
+--- Alertas do Linter ---
+[Aviso] Linha 19: 'Magic Number' detectado (2). Considere extrair para uma constante.
+[Aviso] Linha 21: 'Magic Number' detectado (2). Considere extrair para uma constante.
+[Aviso] Linha 24: 'Magic Number' detectado (3). Considere extrair para uma constante.
+============================
+[código de saída: 0]
+
+$ linter --extra sintaxe_diversa.lua
+=== RELATÓRIO DE ANÁLISE ===
+Arquivo: sintaxe_diversa.lua
+Linhas Físicas: 29
+Linhas Lógicas: 25
+Funções Definidas: 2
+
+--- Função: M.formata ---
+Parâmetros: 2 (fmt, ...)
+Chamadas de Funções Externas: 1 (string.format)
+Profundidade Máxima de Aninhamento: 1
+Complexidade Ciclomática: 1
+
+--- Função: M.processa ---
+Parâmetros: 1 (itens)
+Chamadas de Funções Externas: 7 (M.formata, table.concat, io.write, print, registra, texto:upper, texto:upper(...):sub)
+Profundidade Máxima de Aninhamento: 2
+Complexidade Ciclomática: 5 (1 base + 1 for + 2 and + 1 or)
+
+--- Alertas do Linter ---
+[Aviso] Linha 19: 'Magic Number' detectado (2). Considere extrair para uma constante.
+[Aviso] Linha 21: 'Magic Number' detectado (2). Considere extrair para uma constante.
+[Aviso] Linha 24: 'Magic Number' detectado (3). Considere extrair para uma constante.
+============================
+[código de saída: 0]

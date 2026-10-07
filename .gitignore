@@ -1,0 +1,8 @@
+build/
+linter
+linter.exe
+*.zip
+
+# Enunciado do trabalho (referência local, fora do repositório e do ZIP)
+Trabalho-1-Linter-miniLua.md
+C-Trabalho-*.pdf

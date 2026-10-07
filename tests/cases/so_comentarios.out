@@ -1,0 +1,23 @@
+$ linter so_comentarios.lua
+=== RELATÓRIO DE ANÁLISE ===
+Arquivo: so_comentarios.lua
+Linhas Físicas: 5
+Linhas Lógicas: 0
+Funções Definidas: 0
+
+--- Alertas do Linter ---
+Nenhuma infração de estilo detectada.
+============================
+[código de saída: 0]
+
+$ linter --extra so_comentarios.lua
+=== RELATÓRIO DE ANÁLISE ===
+Arquivo: so_comentarios.lua
+Linhas Físicas: 5
+Linhas Lógicas: 0
+Funções Definidas: 0
+
+--- Alertas do Linter ---
+Nenhuma infração de estilo detectada.
+============================
+[código de saída: 0]

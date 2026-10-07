@@ -1,0 +1,107 @@
+$ linter funcoes_aninhadas.lua
+=== RELATÓRIO DE ANÁLISE ===
+Arquivo: funcoes_aninhadas.lua
+Linhas Físicas: 32
+Linhas Lógicas: 29
+Funções Definidas: 7
+
+--- Função: auxiliar ---
+Parâmetros: 1 (n)
+Chamadas de Funções Externas: 0
+Profundidade Máxima de Aninhamento: 2
+Complexidade Ciclomática: 2 (1 base + 1 if)
+
+--- Função: Conta.deposita ---
+Parâmetros: 2 (self, valor)
+Chamadas de Funções Externas: 1 (notifica)
+Profundidade Máxima de Aninhamento: 1
+Complexidade Ciclomática: 1
+
+--- Função: Conta:saca ---
+Parâmetros: 1 (valor)
+Chamadas de Funções Externas: 1 (erro)
+Profundidade Máxima de Aninhamento: 2
+Complexidade Ciclomática: 2 (1 base + 1 if)
+
+--- Função: externa ---
+Parâmetros: 1 (lista)
+Chamadas de Funções Externas: 3 (ipairs, interna, ordena)
+Profundidade Máxima de Aninhamento: 2
+Complexidade Ciclomática: 2 (1 base + 1 for)
+
+--- Função: interna ---
+Parâmetros: 1 (x)
+Chamadas de Funções Externas: 1 (transforma)
+Profundidade Máxima de Aninhamento: 1
+Complexidade Ciclomática: 1
+
+--- Função: (anônima, linha 29) ---
+Parâmetros: 2 (a, b)
+Chamadas de Funções Externas: 1 (compara)
+Profundidade Máxima de Aninhamento: 1
+Complexidade Ciclomática: 1
+
+--- Função: quadrado ---
+Parâmetros: 1 (v)
+Chamadas de Funções Externas: 0
+Profundidade Máxima de Aninhamento: 1
+Complexidade Ciclomática: 1
+
+--- Alertas do Linter ---
+Nenhuma infração de estilo detectada.
+============================
+[código de saída: 0]
+
+$ linter --extra funcoes_aninhadas.lua
+=== RELATÓRIO DE ANÁLISE ===
+Arquivo: funcoes_aninhadas.lua
+Linhas Físicas: 32
+Linhas Lógicas: 29
+Funções Definidas: 7
+
+--- Função: auxiliar ---
+Parâmetros: 1 (n)
+Chamadas de Funções Externas: 0
+Profundidade Máxima de Aninhamento: 2
+Complexidade Ciclomática: 2 (1 base + 1 if)
+
+--- Função: Conta.deposita ---
+Parâmetros: 2 (self, valor)
+Chamadas de Funções Externas: 1 (notifica)
+Profundidade Máxima de Aninhamento: 1
+Complexidade Ciclomática: 1
+
+--- Função: Conta:saca ---
+Parâmetros: 1 (valor)
+Chamadas de Funções Externas: 1 (erro)
+Profundidade Máxima de Aninhamento: 2
+Complexidade Ciclomática: 2 (1 base + 1 if)
+
+--- Função: externa ---
+Parâmetros: 1 (lista)
+Chamadas de Funções Externas: 3 (ipairs, interna, ordena)
+Profundidade Máxima de Aninhamento: 2
+Complexidade Ciclomática: 2 (1 base + 1 for)
+
+--- Função: interna ---
+Parâmetros: 1 (x)
+Chamadas de Funções Externas: 1 (transforma)
+Profundidade Máxima de Aninhamento: 1
+Complexidade Ciclomática: 1
+
+--- Função: (anônima, linha 29) ---
+Parâmetros: 2 (a, b)
+Chamadas de Funções Externas: 1 (compara)
+Profundidade Máxima de Aninhamento: 1
+Complexidade Ciclomática: 1
+
+--- Função: quadrado ---
+Parâmetros: 1 (v)
+Chamadas de Funções Externas: 0
+Profundidade Máxima de Aninhamento: 1
+Complexidade Ciclomática: 1
+
+--- Alertas do Linter ---
+Nenhuma infração de estilo detectada.
+============================
+[código de saída: 0]

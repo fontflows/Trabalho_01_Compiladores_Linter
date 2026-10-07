@@ -1,0 +1,7 @@
+$ linter erro_comentario.lua
+erro_comentario.lua:2:1: erro léxico: comentário de bloco não terminado
+[código de saída: 1]
+
+$ linter --extra erro_comentario.lua
+erro_comentario.lua:2:1: erro léxico: comentário de bloco não terminado
+[código de saída: 1]

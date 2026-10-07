@@ -1,0 +1,35 @@
+$ linter crlf.lua
+=== RELATÓRIO DE ANÁLISE ===
+Arquivo: crlf.lua
+Linhas Físicas: 9
+Linhas Lógicas: 7
+Funções Definidas: 1
+
+--- Função: soma ---
+Parâmetros: 2 (a, b)
+Chamadas de Funções Externas: 0
+Profundidade Máxima de Aninhamento: 2
+Complexidade Ciclomática: 2 (1 base + 1 if)
+
+--- Alertas do Linter ---
+[Aviso] Linha 5: 'Magic Number' detectado (100). Considere extrair para uma constante.
+============================
+[código de saída: 0]
+
+$ linter --extra crlf.lua
+=== RELATÓRIO DE ANÁLISE ===
+Arquivo: crlf.lua
+Linhas Físicas: 9
+Linhas Lógicas: 7
+Funções Definidas: 1
+
+--- Função: soma ---
+Parâmetros: 2 (a, b)
+Chamadas de Funções Externas: 0
+Profundidade Máxima de Aninhamento: 2
+Complexidade Ciclomática: 2 (1 base + 1 if)
+
+--- Alertas do Linter ---
+[Aviso] Linha 5: 'Magic Number' detectado (100). Considere extrair para uma constante.
+============================
+[código de saída: 0]

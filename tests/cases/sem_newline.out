@@ -1,0 +1,36 @@
+$ linter sem_newline.lua
+=== RELATÓRIO DE ANÁLISE ===
+Arquivo: sem_newline.lua
+Linhas Físicas: 2
+Linhas Lógicas: 3
+Funções Definidas: 1
+
+--- Função: f ---
+Parâmetros: 1 (x)
+Chamadas de Funções Externas: 0
+Profundidade Máxima de Aninhamento: 1
+Complexidade Ciclomática: 1
+
+--- Alertas do Linter ---
+[Aviso] Linha 2: 'Magic Number' detectado (3). Considere extrair para uma constante.
+============================
+[código de saída: 0]
+
+$ linter --extra sem_newline.lua
+=== RELATÓRIO DE ANÁLISE ===
+Arquivo: sem_newline.lua
+Linhas Físicas: 2
+Linhas Lógicas: 3
+Funções Definidas: 1
+
+--- Função: f ---
+Parâmetros: 1 (x)
+Chamadas de Funções Externas: 0
+Profundidade Máxima de Aninhamento: 1
+Complexidade Ciclomática: 1
+
+--- Alertas do Linter ---
+[Aviso] Linha 2: 'Magic Number' detectado (3). Considere extrair para uma constante.
+[Aviso] Linha 3: Arquivo não termina com quebra de linha; a última linha não entra na contagem de linhas físicas.
+============================
+[código de saída: 0]

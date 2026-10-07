@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<!--
+  Linter e extrator de métricas para miniLua - Trabalho 1
+  Integrantes:
+    Francisco Eduardo Fontenele Ramos Neto (15452569)
+    Guilherme Borges de Pádua Barbosa (15653045)
+    Vinicius Botte (15522900)
+  Fonte do relatorio.pdf (impresso com o navegador em modo headless).
+-->
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Relatório: Linter miniLua</title>
+<style>
+  @page { size: A4; margin: 15mm 18mm 15mm 18mm; }
+  body { font-family: "Times New Roman", Times, serif; font-size: 10.5pt; line-height: 1.32; color: #111; background: #fff; margin: 0; }
+  h1 { font-size: 16pt; margin: 0 0 2pt 0; }
+  .sub { margin: 0 0 10pt 0; font-size: 10.5pt; }
+  h2 { font-size: 12.5pt; margin: 13pt 0 4pt 0; }
+  p { margin: 0 0 6pt 0; text-align: justify; }
+  pre { font-family: Consolas, "DejaVu Sans Mono", monospace; font-size: 8pt; line-height: 1.2; background: #f3f3f3; border: 1px solid #ddd; padding: 5pt 7pt; margin: 4pt 0 8pt 0; white-space: pre-wrap; }
+  code { font-family: Consolas, "DejaVu Sans Mono", monospace; font-size: 9.4pt; }
+  table { border-collapse: collapse; margin: 4pt 0 8pt 0; font-size: 9.5pt; }
+  td, th { border: 1px solid #999; padding: 2pt 6pt; text-align: left; vertical-align: top; }
+  th { background: #eee; }
+  ul { margin: 0 0 6pt 0; padding-left: 18pt; }
+  li { margin-bottom: 2pt; }
+</style>
+</head>
+<body>
+
+<h1>Linter e extrator de métricas para miniLua</h1>
+<p class="sub">Compiladores, Trabalho 1. Francisco Eduardo Fontenele Ramos Neto (15452569), Guilherme Borges de Pádua Barbosa (15653045), Vinicius Botte (15522900).</p>
+
+<h2>1. Escolhas de projeto</h2>
+<p>O analisador tem quatro partes: o lexer em Flex (<code>src/lexer.l</code>), a gramática em Bison (<code>src/parser.y</code>), o estado da análise (<code>src/analyzer.cpp</code>) e o programa principal (<code>src/main.cpp</code>). Usamos C++11 para ter <code>std::string</code>, <code>std::vector</code> e <code>std::map</code> no estado, mas mantivemos o esqueleto C do Bison e o lexer C do Flex, usando só recursos que existem desde o Bison 3.0 e o Flex 2.5.35. A interface entre os dois é a de sempre: <code>yylex()</code>, <code>yylval</code> e <code>yylloc</code>.</p>
+<p>Não há AST. As ações semânticas chamam funções do <code>analyzer</code>, que mantém a pilha de funções abertas, a pilha de blocos de controle e a tabela de símbolos. Como a <code>%union</code> do esqueleto C só aceita tipos triviais, os valores semânticos são inteiros: índices para tabelas de nomes, listas e referências guardadas no <code>analyzer</code>. A exceção é <code>ExpVal</code>, uma struct de dois inteiros que diz se a expressão é um literal numérico isolado e se é uma função anônima.</p>
+<p>As posições vêm de <code>%locations</code>. O lexer atualiza <code>yylloc</code> em todo token pela macro <code>YY_USER_ACTION</code>. Um contador de linha global no lexer daria a linha errada nos alertas, porque quando o Bison reduz uma regra o lexer já pode ter lido o token seguinte, que às vezes está na linha de baixo. Com <code>@n</code> cada ação usa a posição do próprio símbolo.</p>
+
+<h2>2. Como a gramática controla o escopo das funções</h2>
+<p>O ponto central é abrir o contexto da função antes de o corpo ser analisado, para que as chamadas, os operadores lógicos e as estruturas de controle encontrados no corpo sejam atribuídos a ela. Isso é feito com uma ação no meio da regra, executada logo depois do nome e antes dos parâmetros. O fechamento acontece quando o <code>end</code> é reduzido em <code>funcbody</code>:</p>
+<pre>stat     : T_FUNCTION funcname        { lint::begin_function($2, @1.first_line); }
+           funcbody
+         | T_LOCAL T_FUNCTION T_NAME  { declare_local_function(...); begin_function($3, ...); }
+           funcbody
+exp      : T_FUNCTION                 { lint::begin_function(-1, @1.first_line); }  /* anônima */
+           funcbody                   { $$ = lint::exp_function(); }
+funcbody : '(' params ')' block T_END { lint::end_function(@5.last_line); }</pre>
+<p><code>begin_function</code> empilha a função; <code>end_function</code> desempilha. Toda métrica é registrada na função do topo da pilha, ou num escopo global quando a pilha está vazia. Assim, numa função aninhada, as chamadas feitas dentro dela ficam com ela, e as feitas depois do seu <code>end</code> voltam para a de fora. Uma chamada é registrada quando a regra <code>functioncall</code> é reduzida, depois dos argumentos; por isso em <code>pcall(function() g() end)</code> a chamada a <code>g</code> fica com a anônima e a chamada a <code>pcall</code> com a função externa.</p>
+<p>As estruturas de controle seguem o mesmo padrão. Em <code>T_IF exp T_THEN { push_control("if") } block elseifs else_part T_END { pop_control() }</code> a ação do meio conta o nó de decisão e empilha o bloco no caminho de aninhamento da função atual. Se o caminho fica maior que o mais profundo já visto, ele é guardado; é daí que sai a cadeia <code>função -&gt; for -&gt; for -&gt; if</code>. O <code>elseif</code> só soma na complexidade, sem empilhar, e <code>and</code> e <code>or</code> somam quando a regra binária é reduzida. Como a ação do meio vem depois da condição, um <code>and</code> na condição de um <code>if</code> é contado antes do <code>if</code>; isso não importa porque o relatório mostra as estruturas e os operadores lógicos em grupos separados.</p>
+<p>Os blocos léxicos usam uma ação vazia no início de <code>block</code> que abre um escopo na tabela de símbolos. Parâmetros e variáveis de laço são colocados numa lista pendente e entram no escopo quando o bloco do corpo abre, de modo que não são visíveis nas expressões de limite do <code>for</code>. Em <code>local x = expr</code> a declaração vem depois da expressão, como no Lua. Essa tabela é usada pelos alertas de variável não usada e de atribuição a global, e para não confundir parâmetro com variável global.</p>
+<p>A gramática não tem conflitos e o arquivo declara <code>%expect 0</code>. Lua tem uma ambiguidade conhecida: em <code>a = f</code> seguido de uma linha que começa com <code>(</code>, o parêntese pode ser argumento de <code>f</code> ou o início de outro comando. Fizemos o comando de chamada ser <code>stat : prefixexp</code> (com verificação na ação de que é mesmo uma chamada), o que transforma o conflito redução/redução em deslocamento/redução, e demos a <code>(</code> precedência maior que as reduções de <code>prefixexp</code>. O resultado é o mesmo do Lua 5.2: a chamada continua.</p>
+
+<h2>3. Métricas e alertas</h2>
+<p><b>Linhas.</b> O lexer conta todo <code>\n</code> que passa por ele, inclusive dentro de comentários e strings, e marca como lógica toda linha coberta por um token. Comentários nunca geram token, então linhas só com comentário ou em branco não são lógicas; uma string longa de três linhas marca as três.</p>
+<p><b>Comandos múltiplos.</b> A lista de comandos de um bloco carrega como valor semântico a última linha do comando anterior. Se o próximo comando começa nessa mesma linha, o alerta é emitido, uma vez por linha.</p>
+<p><b>Magic numbers.</b> Cada literal é registrado pelo lexer. Quando o parser reduz uma atribuição, declaração <code>local</code> ou campo de tabela, os literais que formam sozinhos uma expressão do lado direito (inclusive com sinal de menos) são marcados como isentos. Literais comparados com <code>==</code> ou <code>~=</code> também ficam isentos no modo padrão. No fim, os que sobram e não valem 0 nem 1 viram alerta, com o valor comparado numericamente para que <code>0x0</code> ou <code>1.0</code> também sejam aceitos.</p>
+<p><b>Relatório.</b> Os alertas são ordenados por linha. Cada função mostra parâmetros, chamadas externas (sem as recursivas), profundidade e complexidade <i>v(G) = 1 + N<sub>d</sub></i> com o detalhamento.</p>
+
+<h2>4. Decisões de interpretação</h2>
+<ul>
+<li>Linhas físicas são o número de <code>\n</code>, como no <code>wc -l</code>; é a única forma de obter as 44 linhas do teste3, cujo arquivo original não terminava em quebra de linha.</li>
+<li>O enunciado dá 11 linhas lógicas para o teste2, mas o código tem 12 linhas com código. Mantivemos 12.</li>
+<li>Acrescentamos <code>Funções Definidas: N</code>, já que a contagem é pedida no item I.1 e os exemplos não a mostram.</li>
+<li>O teste2 não aponta o <code>2</code> de <code>tipo_cliente == 2</code>, enquanto o teste3 aponta o <code>18</code> de <code>idade &lt; 18</code>. Isentamos literais comparados por igualdade no modo padrão; o <code>--extra</code> aponta esses também.</li>
+<li><code>repeat</code> soma 1 na profundidade como os outros laços; <code>elseif</code>, <code>else</code> e <code>do ... end</code> não somam. Função aninhada tem contagem própria.</li>
+<li>No detalhamento da complexidade, as estruturas aparecem na ordem da primeira ocorrência, depois <code>and</code> e depois <code>or</code>, ordem que reproduz os quatro exemplos.</li>
+<li>Recursão, inclusive <code>self:m()</code> dentro de <code>Classe:m</code>, não conta como chamada externa.</li>
+</ul>
+<p>Com essas escolhas, a saída dos três exemplos é igual à do enunciado, exceto pela linha de contagem de funções e pelas 12 linhas lógicas do teste2.</p>
+
+<h2>5. Testes</h2>
+<p>O diretório <code>tests/cases</code> tem 23 arquivos <code>.lua</code>, cada um com um <code>.out</code> que guarda a saída padrão, a saída de erro e o código de saída, nos modos normal e <code>--extra</code>. O <code>make test</code> roda todos e mostra o diff de quem falhar. Além dos três exemplos, há casos para comentários de bloco com e sem nível, <code>---[[</code> (que é comentário de linha), <code>--</code> e <code>;</code> dentro de strings, todas as sequências de escape (incluindo <code>\z</code>, <code>\x</code>, <code>\ddd</code> e <code>\u{}</code>), strings longas, CRLF, arquivo sem quebra de linha final, arquivo vazio e só com comentários, números hexadecimais e em notação científica, funções aninhadas, anônimas, locais e métodos, <code>repeat</code>, código no escopo global, comandos múltiplos, os alertas extras e seis erros léxicos e sintáticos. Também compilamos com <code>-D_GLIBCXX_DEBUG</code> para checar acessos fora dos limites nos contêineres e rodamos os testes nesse modo. O pacote foi descompactado numa pasta limpa, compilado e testado de novo antes da entrega.</p>
+
+<p><b>Exemplos do enunciado.</b> A tabela compara a saída do linter com a esperada nos três exemplos. Todos os outros campos (parâmetros, chamadas, profundidade, complexidade com o detalhamento e todos os alertas) são idênticos.</p>
+<table>
+<tr><th>Exemplo</th><th>Diferença em relação ao enunciado</th></tr>
+<tr><td>teste1</td><td>só a linha <code>Funções Definidas: 1</code></td></tr>
+<tr><td>teste2</td><td><code>Funções Definidas: 1</code> e 12 linhas lógicas em vez de 11</td></tr>
+<tr><td>teste3</td><td>só a linha <code>Funções Definidas: 3</code></td></tr>
+</table>
+<p>Saída real para o teste3, que exercita quase todas as métricas:</p>
+<pre>=== RELATÓRIO DE ANÁLISE ===
+Arquivo: teste3.lua
+Linhas Físicas: 44
+Linhas Lógicas: 37
+Funções Definidas: 3
+
+--- Função: valida_usuario ---
+Parâmetros: 3 (idade, status, pontuacao)
+Chamadas de Funções Externas: 2 (registra_evento, registra_evento)
+Profundidade Máxima de Aninhamento: 2
+Complexidade Ciclomática: 6 (1 base + 2 if + 1 elseif + 1 and + 1 or)
+
+--- Função: processa_matriz ---
+Parâmetros: 2 (linhas, colunas)
+Chamadas de Funções Externas: 2 (cria_matriz_vazia, log_operacao)
+Profundidade Máxima de Aninhamento: 4 (função -&gt; for -&gt; for -&gt; if)
+Complexidade Ciclomática: 4 (1 base + 2 for + 1 if)
+
+--- Função: busca_limite ---
+Parâmetros: 2 (valores, limite_maximo)
+Chamadas de Funções Externas: 1 (alerta_limite)
+Profundidade Máxima de Aninhamento: 3 (função -&gt; while -&gt; if)
+Complexidade Ciclomática: 3 (1 base + 1 while + 1 if)
+
+--- Alertas do Linter ---
+[Aviso] Linha 3: 'Magic Number' detectado (18). Considere extrair para uma constante.
+[Aviso] Linha 7: 'Magic Number' detectado (1000). Considere extrair para uma constante.
+[Aviso] Linha 10: 'Magic Number' detectado (500). Considere extrair para uma constante.
+[Aviso] Linha 27: Múltiplos comandos na mesma linha detectados.
+[Aviso] Linha 40: 'Magic Number' detectado (999). Considere extrair para uma constante.
+============================</pre>
+
+<p><b>Outros casos.</b> Alguns trechos dos testes adicionais e o que o linter produz para eles:</p>
+<table>
+<tr><th>Entrada</th><th>Resultado</th></tr>
+<tr><td><code>local function interna(x) return transforma(x) end</code> dentro de <code>externa</code></td><td><code>transforma</code> conta para <code>interna</code>, não para <code>externa</code></td></tr>
+<tr><td><code>ordena(lista, function(a, b) return compara(a, b) end)</code></td><td>função <code>(anônima, linha 29)</code> com a chamada a <code>compara</code>; <code>ordena</code> fica com a função de fora</td></tr>
+<tr><td><code>function Conta:saca(v) ... self:saca(0) end</code></td><td>chamada recursiva, não conta como externa</td></tr>
+<tr><td><code>repeat ... if ... while ... end end until t &gt;= 3 or ...</code></td><td>profundidade <code>4 (função -&gt; repeat -&gt; if -&gt; while)</code>, complexidade 5</td></tr>
+<tr><td><code>local a = "texto com -- e ;"</code></td><td>nenhum comentário nem comando múltiplo detectado</td></tr>
+<tr><td><code>--[[ fechado ]] local fator = 7</code></td><td>a linha conta como lógica; o comentário não</td></tr>
+<tr><td><code>x * 0xFF</code>, <code>x + 1e3</code>, <code>x + 0x0</code></td><td>alerta para <code>0xFF</code> e <code>1e3</code>; <code>0x0</code> vale 0 e é aceito</td></tr>
+<tr><td><code>if a then return x end</code> numa linha</td><td>sem alerta; <code>if a then x = y; y = x end</code> gera alerta</td></tr>
+<tr><td>função sem o <code>end</code> do <code>if</code></td><td><code>erro de sintaxe: fim do arquivo inesperado; a função da linha 1 não foi fechada com 'end'</code></td></tr>
+<tr><td><code>local s = "sem fim</code></td><td><code>erro léxico: string não terminada</code>, com linha e coluna</td></tr>
+</table>
+
+<h2>6. Limitações</h2>
+<ul>
+<li>Não há recuperação de erro: o primeiro erro léxico ou sintático interrompe a análise do arquivo e nenhum relatório é impresso para ele.</li>
+<li>Ficaram de fora recursos de Lua que não estão no miniLua: <code>goto</code> e rótulos, operadores bit a bit e atributos como <code>&lt;const&gt;</code>.</li>
+<li>Um literal entre parênteses, como <code>local x = (5)</code>, é apontado como magic number, porque a isenção só vale para o literal sozinho.</li>
+<li>O reconhecimento de recursão é por nome. Uma função guardada em outra variável e chamada por ela conta como externa.</li>
+<li>Colunas nas mensagens de erro são contadas em bytes, então caracteres acentuados antes do erro deslocam a coluna.</li>
+<li>Arquivos que usam só <code>\r</code> como fim de linha (Mac clássico) são lidos como uma linha só.</li>
+</ul>
+
+<h2>7. Extras</h2>
+<ul>
+<li>Números hexadecimais (<code>0xFF</code>, <code>0x1p4</code>) e em notação científica (<code>1e3</code>, <code>2.5E-2</code>), com erro para números malformados como <code>12abc</code>.</li>
+<li>Opção <code>--extra</code> com alertas de função longa (mais de 50 linhas lógicas), mais de 5 parâmetros, aninhamento acima de 4, complexidade acima de 10, variável, parâmetro ou função local não usados, atribuição a global dentro de função e arquivo sem quebra de linha final. Ficam atrás da opção para não mudar a saída dos exemplos.</li>
+<li>Mensagens de erro com arquivo, linha e coluna, em português. Quando falta um <code>end</code>, a mensagem diz qual bloco ficou aberto e em que linha.</li>
+<li>Sintaxe de Lua além do miniLua: tabelas, indexação, métodos, <code>for ... in</code>, <code>local function</code>, funções anônimas (nomeadas pela variável ou campo que as recebe), strings longas e comentários com nível.</li>
+<li>Vários arquivos por execução, leitura da entrada padrão e seção de métricas para o código fora de funções.</li>
+</ul>
+
+<h2>8. Divisão do trabalho</h2>
+<table>
+<tr><th>Integrante</th><th>Responsabilidade</th></tr>
+<tr><td>Francisco Eduardo Fontenele Ramos Neto (15452569)</td><td>Analisador léxico, contagem de linhas, literais e strings</td></tr>
+<tr><td>Guilherme Borges de Pádua Barbosa (15653045)</td><td>Gramática, controle de escopo das funções e blocos, mensagens de erro</td></tr>
+<tr><td>Vinicius Botte (15522900)</td><td>Métricas, alertas, relatório, testes e documentação</td></tr>
+</table>
+
+</body>
+</html>
